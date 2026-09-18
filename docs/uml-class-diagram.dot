@@ -1,0 +1,124 @@
+digraph UML {
+  graph [rankdir=TB, splines=polyline, nodesep=0.7, ranksep=0.9,
+         bgcolor="white", fontname="Helvetica", label="Community Health Clinic Management System - UML Class Diagram",
+         labelloc="t", fontsize=18];
+  node  [shape=plaintext, fontname="Helvetica", fontsize=10];
+  edge  [fontname="Helvetica", fontsize=9, color="#444444", fontcolor="#1a1a1a"];
+
+  Person [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#E8F1F8">
+    <TR><TD ALIGN="CENTER"><B>&lt;&lt;abstract&gt;&gt;<BR/>Person</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - id : String<BR/>- fullName : String<BR/>- dateOfBirth : LocalDate<BR/>- phone : String<BR/>- email : String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + getRole() : String {abstract}<BR/>+ getAge() : int<BR/>+ getId() : String</TD></TR>
+    </TABLE>>];
+
+  Patient [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFFFF">
+    <TR><TD ALIGN="CENTER"><B>Patient</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - medicareNumber : String<BR/>- address : String<BR/>- allergies : String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + getRole() : String<BR/>+ getMedicareNumber() : String</TD></TR>
+    </TABLE>>];
+
+  Doctor [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFFFF">
+    <TR><TD ALIGN="CENTER"><B>Doctor</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - specialisation : String<BR/>- consultationFee : double<BR/>- availableDays : Set&lt;DayOfWeek&gt;</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + getRole() : String<BR/>+ isAvailableOn(DayOfWeek) : boolean</TD></TR>
+    </TABLE>>];
+
+  Administrator [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFFFF">
+    <TR><TD ALIGN="CENTER"><B>Administrator</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - username : String<BR/>- password : String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + getRole() : String<BR/>+ authenticate(String,String) : boolean</TD></TR>
+    </TABLE>>];
+
+  Appointment [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFFFF">
+    <TR><TD ALIGN="CENTER"><B>Appointment</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - id : String<BR/>- dateTime : LocalDateTime<BR/>- reason : String<BR/>- status : AppointmentStatus</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + getEndTime() : LocalDateTime<BR/>+ clashesWith(Appointment) : boolean<BR/>+ cancel() : void<BR/>+ complete() : void</TD></TR>
+    </TABLE>>];
+
+  Treatment [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFFFF">
+    <TR><TD ALIGN="CENTER"><B>Treatment</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - id : String<BR/>- description : String<BR/>- medication : String<BR/>- cost : double<BR/>- treatmentDate : LocalDate</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + getTotalCharge() : double</TD></TR>
+    </TABLE>>];
+
+  Clinic [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFF6E5">
+    <TR><TD ALIGN="CENTER"><B>Clinic</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - name : String<BR/>- address : String<BR/>- phone : String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + bookAppointment(Appointment)<BR/>+ generateDoctorSchedule(Doctor,LocalDate)<BR/>+ getTotalRevenue() : double<BR/>+ loadAll() / saveAll()</TD></TR>
+    </TABLE>>];
+
+  Repository [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#EDF7ED">
+    <TR><TD ALIGN="CENTER"><B>&lt;&lt;interface&gt;&gt;<BR/>Repository&lt;T&gt;</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + add(T) : void<BR/>+ update(T) : boolean<BR/>+ deleteById(String) : boolean<BR/>+ findById(String) : Optional&lt;T&gt;<BR/>+ findAll() : List&lt;T&gt;<BR/>+ save() / load() : void</TD></TR>
+    </TABLE>>];
+
+  FileRepository [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#EDF7ED">
+    <TR><TD ALIGN="CENTER"><B>FileRepository&lt;T&gt;</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      - file : Path<BR/>- items : ArrayList&lt;T&gt;<BR/>- serialiser : Function&lt;T,String&gt;<BR/>- deserialiser : Function&lt;String,T&gt;</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      + save() : void<BR/>+ load() : void</TD></TR>
+    </TABLE>>];
+
+  Status [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#F4F0FA">
+    <TR><TD ALIGN="CENTER"><B>&lt;&lt;enumeration&gt;&gt;<BR/>AppointmentStatus</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT" BORDER="1" SIDES="T">
+      SCHEDULED<BR/>COMPLETED<BR/>CANCELLED</TD></TR>
+    </TABLE>>];
+
+  { rank = same; Person; Clinic; }
+  { rank = same; Patient; Doctor; Administrator; }
+  { rank = same; Appointment; Repository; }
+  { rank = same; Treatment; FileRepository; Status; }
+
+  /* Generalisation: hollow triangle points at the superclass */
+  edge [dir=back, arrowtail=onormal, arrowhead=none, style=solid];
+  Person -> Patient;
+  Person -> Doctor;
+  Person -> Administrator;
+
+  /* Realisation: dashed line, hollow triangle at the interface */
+  Repository -> FileRepository [style=dashed];
+
+  /* Associations with multiplicity */
+  edge [dir=none, arrowtail=none, arrowhead=none, style=solid];
+  Patient -> Appointment [taillabel="1", headlabel="0..*", xlabel="books", labeldistance=2.0, labelangle=18];
+  Doctor  -> Appointment [taillabel="1", headlabel="0..*", xlabel="is assigned", labeldistance=2.0, labelangle=-18];
+
+  /* Composition: filled diamond on the whole (Appointment) */
+  edge [dir=back, arrowtail=diamond, arrowhead=none];
+  Appointment -> Treatment [taillabel="1", headlabel="0..*", xlabel="results in", labeldistance=2.0, labelangle=18];
+
+  /* Aggregation: hollow diamond on the container (Clinic) */
+  edge [dir=back, arrowtail=odiamond, arrowhead=none];
+  Clinic -> Repository [taillabel="1", headlabel="5", xlabel="manages", labeldistance=2.0, labelangle=18];
+
+  /* Dependency */
+  edge [dir=forward, arrowtail=none, arrowhead=vee, style=dashed];
+  Appointment -> Status [xlabel="uses"];
+}
